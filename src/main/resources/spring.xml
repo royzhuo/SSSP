@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:contex="http://www.springframework.org/schema/context"
-       xmlns="http://www.springframework.org/schema/beans"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
          http://www.springframework.org/schema/context
@@ -14,18 +14,21 @@
           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <!--1.开启spring扫描包注解-->
-    <contex:component-scan base-package="java" use-default-filters="false"></contex:component-scan>
+    <contex:component-scan base-package="com" use-default-filters="false">
+        <contex:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <contex:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </contex:component-scan>
 
     <!--2.配置数据源-->
     <contex:property-placeholder location="classpath:db.properties"/>
-     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-         <property name="user" value="${user}"/>
-         <property name="password" value="${pwd}"/>
-         <property name="jdbcUrl" value="${url}"/>
-         <property name="driverClass" value="${driver}"/>
-         <property name="maxPoolSize" value="${maxPoolCon}"/>
-         <property name="initialPoolSize" value="${initPoolCon}"/>
-     </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="user" value="${user}"/>
+        <property name="password" value="${pwd}"/>
+        <property name="jdbcUrl" value="${url}"/>
+        <property name="driverClass" value="${driver}"/>
+        <property name="maxPoolSize" value="${maxPoolCon}"/>
+        <property name="initialPoolSize" value="${initPoolCon}"/>
+    </bean>
 
     <!--3.配置entitymanager-->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -33,13 +36,20 @@
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
+        <property name="packagesToScan" value="com.entity"/>
         <!--配置hibernate基本属性-->
+        <!--配置二级缓存 有效方式-->
+        <property name="sharedCacheMode" value="ENABLE_SELECTIVE"/>
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <!--配置二级缓存-->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
             </props>
         </property>
     </bean>
@@ -51,5 +61,5 @@
     <!--5.开启事物注解-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <!--6.配置springData-->
-    <jpa:repositories base-package="java" entity-manager-factory-ref="entityManagerFactory" />
+    <jpa:repositories base-package="com.dao" entity-manager-factory-ref="entityManagerFactory"/>
 </beans>
