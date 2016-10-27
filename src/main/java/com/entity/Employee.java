@@ -1,6 +1,7 @@
 package com.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class Employee {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @JoinColumn(name = "dept_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Department dept;
 
     public Employee() {

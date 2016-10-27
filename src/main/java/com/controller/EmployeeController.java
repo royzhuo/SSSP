@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.entity.Employee;
+import com.service.DepartmentService;
 import com.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @RequestMapping(value = "/emps", method = RequestMethod.GET)
     public String findAllEmployees(@RequestParam(value = "pageNo", defaultValue = "1", required = false) String pageNo, Map<String, Page<Employee>> employeeMap) {
@@ -40,4 +43,12 @@ public class EmployeeController {
 
         return "list";
     }
+
+    @RequestMapping("/inputEmployee")
+    public String findAllDepartments(Map<String, Object> map, Employee employee) {
+        map.put("emp", employee);
+        map.put("dept", departmentService.findAllDepartments());
+        return "/inputEmployee";
+    }
+
 }

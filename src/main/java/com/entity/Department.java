@@ -1,5 +1,6 @@
 package com.entity;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,13 +10,14 @@ import javax.persistence.Table;
 /**
  * @author roy.zhuo
  */
+@Cacheable
 @Table
 @Entity
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     private String name;
 
     public Department() {
