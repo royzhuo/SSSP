@@ -14,7 +14,7 @@
           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <!--1.开启spring扫描包注解-->
-    <contex:component-scan base-package="com" use-default-filters="false">
+    <contex:component-scan base-package="com">
         <contex:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <contex:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </contex:component-scan>
@@ -38,12 +38,18 @@
         </property>
         <property name="packagesToScan" value="com.entity"/>
         <!--配置hibernate基本属性-->
+        <!--配置二级缓存 有效方式-->
+        <property name="sharedCacheMode" value="ENABLE_SELECTIVE"/>
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <!--配置二级缓存-->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
             </props>
         </property>
     </bean>
