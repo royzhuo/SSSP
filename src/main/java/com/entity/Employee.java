@@ -1,5 +1,7 @@
 package com.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +25,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @Temporal(TemporalType.DATE)
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")//将字符串改成date类型
+    @Temporal(TemporalType.DATE)//规定时间类型
     private Date birthDay;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author roy.zhuo
@@ -19,6 +20,7 @@ public class EmployeeService {
     private EmployeeDao employeeDao;
 
     //获取所有员工
+    @Transactional
     public Page<Employee> findEmps(Integer pageNo, Integer pageSize) {
         Page<Employee> employeePage = null;
         Sort.Order order = new Sort.Order(Sort.Direction.DESC, "id");
@@ -27,5 +29,14 @@ public class EmployeeService {
         employeePage = employeeDao.findAll(pageRequest);
         return employeePage;
 
+    }
+
+    @Transactional
+    public Employee findEmployee(String name) {
+        return employeeDao.findEmployee(name);
+    }
+
+    public void addEmployee(Employee employee) {
+        employeeDao.save(employee);
     }
 }

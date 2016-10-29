@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:contex="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:contex="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--开启包扫描注解-->
     <contex:component-scan base-package="com" use-default-filters="false">
@@ -19,5 +22,6 @@
     </bean>
     <!--处理静态资源请求-->
     <mvc:default-servlet-handler/>
+    <!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射-->
     <mvc:annotation-driven/>
 </beans>

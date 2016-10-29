@@ -10,19 +10,27 @@
 <html>
 <head>
     <title>添加员工</title>
+    <script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+    <script src="../js/employee.js" language="javascript" type="text/javascript"></script>
+    <script language="JavaScript" type="text/javascript">
+        $(function () {
+            employee.validateName();
+        })
+
+    </script>
 </head>
 <body>
-<form:form action="#" method="post" modelAttribute="emp">
-    姓名 <form:input path="name" title="name"/><br><br>
+<form:form action="/emp" method="post" modelAttribute="employee">
+    姓名 <form:input path="name" title="name" id="ename"/><br><br>
 
     生日 <form:input path="birthDay" title="birtdhDay"/>
     <br><br>
-    部门 <form:select path="dept">
+    部门 <form:select path="dept.id">
     <option>请选择</option>
     <form:options itemValue="id" itemLabel="name" items="${dept}"/>
-    </form:select>
+</form:select>
     <br><br>
-    创建时间<form:input path="createTime" title="createTime"/>
+
     <br><br>
     <input type="submit" value="提交">
 </form:form>
