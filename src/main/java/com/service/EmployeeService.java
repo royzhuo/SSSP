@@ -20,7 +20,7 @@ public class EmployeeService {
     private EmployeeDao employeeDao;
 
     //获取所有员工
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Employee> findEmps(Integer pageNo, Integer pageSize) {
         Page<Employee> employeePage = null;
         Sort.Order order = new Sort.Order(Sort.Direction.DESC, "id");
@@ -31,12 +31,28 @@ public class EmployeeService {
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Employee findEmployee(String name) {
         return employeeDao.findEmployee(name);
     }
 
+    @Transactional
     public void addEmployee(Employee employee) {
         employeeDao.save(employee);
+    }
+
+    @Transactional(readOnly = true)
+    public Employee findEmployeeById(Integer id) {
+        return employeeDao.findEmployeeById(id);
+    }
+
+    @Transactional
+    public void updateEmp(Employee employee) {
+        employeeDao.saveAndFlush(employee);//能更新也能保存
+    }
+
+    @Transactional
+    public void deleteEmployee(Integer id) {
+        employeeDao.delete(id);
     }
 }

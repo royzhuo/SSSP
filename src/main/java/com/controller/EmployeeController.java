@@ -1,17 +1,21 @@
 package com.controller;
 
+import com.entity.Department;
 import com.entity.Employee;
 import com.service.DepartmentService;
 import com.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,12 +84,39 @@ public class EmployeeController {
         return "redirect:/emps";
     }
 
-    /*@ModelAttribute("emp")
-    public Employee put(Map<String, Employee> map) {
+    @ModelAttribute()
+    public void put(Map<String, Object> map, @RequestParam(value = "id", required = false) Integer id) {
         System.out.println("ModelAttribute");
-       *//* Employee employee = new Employee();
-        map.put("emp", employee);*//*
-        return new Employee();
-    }*/
+        if (id != null) {
+            Employee employee = employeeService.findEmployeeById(id);
+            employee.setDept(null);
+            map.put("employee", employee);
+
+        }
+
+
+    }
+
+    @RequestMapping(value = "/emp/{id}", method = RequestMethod.GET)
+    public String findEmployee(@PathVariable("id") Integer id, Map<String, Object> map) {
+        Employee employee = employeeService.findEmployeeById(id);
+        List<Department> departments = departmentService.findAllDepartments();
+        map.put("employee", employee);
+        map.put("dept", departments);
+        return "/inputEmployee";
+    }
+
+    @RequestMapping(value = "/emp/{id}", method = RequestMethod.PUT)
+    public String updateEmployee(@PathVariable("id") Integer id, Employee employee) {
+        //if (id!=null||employee.getId()!=null)
+        employeeService.updateEmp(employee);
+        return "redirect:/emps";
+    }
+
+    @RequestMapping(value = "emp/{id}", method = RequestMethod.DELETE)
+    public String deleteEmployee(@PathVariable("id") Integer id) {
+        employeeService.deleteEmployee(id);
+        return "redirect:/emps";
+    }
 
 }

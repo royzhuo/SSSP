@@ -8,9 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
     <title>员工列表页面</title>
+    <script src="../script/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/employee.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            employee.deleteEmployee();
+        })
+    </script>
 </head>
 <body>
 
@@ -36,7 +44,12 @@
                 <td>${emp.birthDay}</td>
                 <td>${emp.dept.name}</td>
                 <td>${emp.createTime}</td>
-                <td><a href="#">删除</a> &nbsp;<a href="#">修改</a></td>
+                <td><a href="${pageContext.request.contextPath}/emp/${emp.id}" class="delHrel">删除</a>
+                    <input type="hidden" value="${emp.name}">
+                    &nbsp;<a href="${pageContext.request.contextPath}/emp/${emp.id}">修改</a>
+
+
+                </td>
             </tr>
         </c:forEach>
         <tr>
@@ -53,8 +66,13 @@
             </c:if>
         </tr>
     </table>
-</c:if>
 
+
+</c:if>
+<form action="" method="post" id="deleteForm">
+    <input type="hidden" id="_method" name="_method" value="DELETE">
+
+</form>
 <%--<c:choose>
     相当于 if esle
     <c:when test=""></c:when>

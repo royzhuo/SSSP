@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>添加员工</title>
@@ -20,7 +22,18 @@
     </script>
 </head>
 <body>
-<form:form action="/emp" method="post" modelAttribute="employee">
+
+<c:set value="/emp" var="url"></c:set>
+
+<c:if test="${employee.id !=null}">
+    <c:set value="${pageContext.request.contextPath}/emp/${employee.id}" var="url"></c:set>
+</c:if>
+<form:form action="${url}" method="post" modelAttribute="employee">
+    <c:if test="${employee.id !=null}">
+        <input type="hidden" id="_oldName" value="${employee.name}">
+        <form:hidden path="id"/>
+        <input type="hidden" name="_method" value="PUT"/>
+    </c:if>
     姓名 <form:input path="name" title="name" id="ename"/><br><br>
 
     生日 <form:input path="birthDay" title="birtdhDay"/>
@@ -29,8 +42,6 @@
     <option>请选择</option>
     <form:options itemValue="id" itemLabel="name" items="${dept}"/>
 </form:select>
-    <br><br>
-
     <br><br>
     <input type="submit" value="提交">
 </form:form>
