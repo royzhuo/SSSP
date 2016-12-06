@@ -2,11 +2,19 @@ var employee = {};
 
 employee.validateName = function () {
     $("#ename").change(function () {
+
         var name = $(this).val();
         name = $.trim(name);
+        var oldName = $("#_oldName").val();
+        oldName = $.trim(oldName);
+        if (oldName != null && oldName != "" && oldName == name) {
+            alert("名字可用");
+            return false;
+        }
         var params = {"name": name};
-        var urlval = "valiateEmployeeName?name=" + name;
-        //var urlval = "valiateEmployeeName";
+        var urlval = "/valiateEmployeeName?name=" + name;
+
+
         $.ajax({
             url: urlval,
             type: "post",
@@ -29,4 +37,21 @@ employee.validateName = function () {
          })*/
 
     });
+};
+
+employee.deleteEmployee = function () {
+
+    $(".delHrel").click(function () {
+        var label = $(this).next(":hidden").val();
+        var flag = confirm("确定要删除" + label);
+        if (flag) {
+            var url = $(this).attr("href");
+            $("#deleteForm").attr("action", url);
+            //$("#_method").val("DELETE");
+            $("#deleteForm").submit();
+        }
+        return false;
+
+
+    })
 };

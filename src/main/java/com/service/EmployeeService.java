@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author roy.zhuo
  */
@@ -54,5 +56,10 @@ public class EmployeeService {
     @Transactional
     public void deleteEmployee(Integer id) {
         employeeDao.delete(id);
+    }
+
+    public List<Employee> findAllEmp() {
+
+        return employeeDao.findAll();
     }
 }

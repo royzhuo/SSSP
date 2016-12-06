@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,10 +74,24 @@ public class EmployeeController {
 
     @RequestMapping(value = "/testJson", method = RequestMethod.POST)
     @ResponseBody
-    public String testJson() {
+    public Map<String, Object> testJson() {
         String value = "aa";
-        return value;
+        Map<String, Object> maps = new HashMap<String, Object>();
+        maps.put("name", "roy");
+        maps.put("value", value);
+        return maps;
     }
+
+    @RequestMapping(value = "/testJson1", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> testJson2() {
+        String value = "aa";
+        Map<String, Object> maps = new HashMap<String, Object>();
+        maps.put("name", "roy");
+        maps.put("value", value);
+        return maps;
+    }
+
 
     @RequestMapping(value = "/emp", method = RequestMethod.POST)
     public String addEmployee(Employee employee) {
@@ -117,6 +133,51 @@ public class EmployeeController {
     public String deleteEmployee(@PathVariable("id") Integer id) {
         employeeService.deleteEmployee(id);
         return "redirect:/emps";
+    }
+
+
+    @RequestMapping(value = "/emp/find", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> findEmployeeById(@RequestParam(value = "id", required = false) Integer id, Map<String, Object> map) {
+        Employee employee = employeeService.findEmployeeById(id);
+        map.put("emp", employee);
+        map.put("aa", "aaa");
+        return map;
+    }
+
+    @RequestMapping(value = "/testEmp", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> testEmp(@RequestParam(value = "id") Integer id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", "roy");
+        Employee employee = employeeService.findEmployeeById(id);
+        map.put("emp", employee);
+        return map;
+
+    }
+
+    @RequestMapping(value = "/testEmpList", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> testFindAllEmps() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<Employee> employees = new ArrayList<Employee>();
+        Employee employee = new Employee();
+        employee.setId(1);
+        employee.setName("roy");
+        employee.setBirthDay(new Date());
+        employee.setCreateTime(new Date());
+        Employee employee2 = new Employee();
+        employee2.setId(2);
+        employee2.setName("alan");
+        employee2.setBirthDay(new Date());
+        employee2.setCreateTime(new Date());
+
+        employees.add(employee);
+        employees.add(employee2);
+        map.put("emps", employees);
+        return map;
+
+
     }
 
 }
